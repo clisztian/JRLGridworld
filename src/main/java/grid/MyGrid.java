@@ -1,5 +1,6 @@
 package grid;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import org.nd4j.linalg.api.buffer.DataBuffer;
@@ -9,14 +10,19 @@ import org.nd4j.linalg.factory.Nd4j;
 public class MyGrid {
 
 	static Random rng = new Random(); 	
-	
-	int[] w_loc,a_loc,p_loc,g_loc;
-	
+	 
+		
 	INDArray state;
 	INDArray player;
 	INDArray wall;
 	INDArray pit;
 	INDArray goal;
+
+	int[] w_loc,a_loc,p_loc,g_loc;
+	private final int n_rows = 4;
+	private final int n_cols = 4;
+	
+	ArrayList<int[]> actions = null;
 	
 	public MyGrid() {
 		
@@ -40,7 +46,15 @@ public class MyGrid {
 		
 	}
 	
-	
+	public void setActions() {
+		
+		actions = new ArrayList<int[]>();
+		actions.add(new int[]{-1,0});
+		actions.add(new int[]{1,0});
+		actions.add(new int[]{0,-1});
+		actions.add(new int[]{0,1});
+		
+	}
 	
 	/*
        Initializes the playing grid in a deterministic way
@@ -91,6 +105,50 @@ public class MyGrid {
 	
 	public void printGrid() {
 		
+		String currentGrid = "";
+		int[] currentPosition = new int[2];
+		currentPosition[0] = 0; currentPosition[1] = 0;
+		
+		for(int i = 0; i < n_rows; i++) {
+			for(int j = 0; j < n_cols; j++) {				
+				
+				currentPosition[0] = i; 
+				currentPosition[1] = j;
+				
+				if(currentPosition.equals(a_loc)) currentGrid += "P";
+				else if(currentPosition.equals(w_loc)) currentGrid += "W";
+				else if(currentPosition.equals(p_loc)) currentGrid += "-";
+				else if(currentPosition.equals(g_loc)) currentGrid += "+";
+				else currentGrid += " ";
+			}
+			currentGrid += "\n";
+		}
+		System.out.println(currentGrid);
+	}
+	
+	public void makeMove(int action) {
+		
+		if(actions != null && action < actions.size()) {
+			
+			
+			
+			
+		}
+		
+	}
+	
+	public float getReward() {
+	
+		
+		if(a_loc.equals(g_loc)) {
+			return 10f;
+		}
+		else if(a_loc.equals(p_loc)) {
+			return -10f;
+		}
+		else {
+			return -1f;
+		}
 	}
 	
 	
